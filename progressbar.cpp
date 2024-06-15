@@ -118,12 +118,17 @@ void func3(int num) {
 int main(int argc, const char * argv[]) {
     
     std::vector<std::thread> v;
+
     std::thread th1(func1, 3);
     std::thread th2(func2, 4);
     std::thread th3(func3, 50);
-    th1.join();
-    th2.join();
-    th3.join();
+    v.push_back(std::move(th1));
+    v.push_back(std::move(th2));
+    v.push_back(std::move(th3));
+
+    for (auto &el : v) {
+        el.join();
+    }
 
     return 0;
 }
